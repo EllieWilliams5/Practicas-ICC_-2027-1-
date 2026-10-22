@@ -18,7 +18,6 @@ No incluye reportes, únicamente el código.
 
 ## Cómo ejecutar
 
-- **Scripts de JShell** (`.jsh`): `jshell < archivo.jsh`
 - **Programas de Java**: dentro de la carpeta del programa,
   ```
   javac Archivo.java
