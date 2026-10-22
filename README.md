@@ -16,6 +16,8 @@ No incluye reportes, únicamente el código.
 | `Practica03/` | Introducción a Git y LaTeX | Documento de LaTeX, README de ejemplo y comandos de Git |
 | `Practica04/` | Dándole memoria a un programa | Variables en JShell, comentarios, `printf` y el cotizador |
 
+**Próximamente, la práctica 5...**
+
 ## Cómo ejecutar
 
 - **Programas de Java**: dentro de la carpeta del programa,
@@ -23,3 +25,4 @@ No incluye reportes, únicamente el código.
   javac Archivo.java
   java Archivo
   ```
+  
