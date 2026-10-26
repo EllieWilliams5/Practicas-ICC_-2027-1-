@@ -37,7 +37,9 @@ Para ejecutar un *bytecode* de la clase elegida.
 
 ## Algunos valores para que verifican que el programa esta bien ;)
 
-| Tasa aplicada | 15 % | 
+| Dato | Valor esperado |
+| ------------- | ------------- |
+| Tasa aplicada | 15 % (este valor ya viene por defecto) | 
 | Interés simple | $3385.99 |
 | Total con interés simple | $16284.99 |
 | Interés compuesto | $3844.71 |
