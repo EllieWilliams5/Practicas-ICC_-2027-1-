@@ -1,0 +1,38 @@
+/*
+ * Practica 5 - Actividad 1.1: Un numero fijo de dardos
+ * Aproxima el valor de pi con el metodo Monte Carlo: se lanzan dardos al
+ * azar sobre un cuadrado de 1 x 1 y se cuenta cuantos caen dentro del
+ * cuarto de circulo de radio 1.
+ */
+public class EstimacionPi {
+    public static void main(String[] args) {
+
+        // Cantidad de dardos a lanzar (cambiar por 100, 1000, 10000, ...)
+        int dardosTotales = 1000000;
+
+        int dardosLanzados = 0;   // contador del ciclo
+        int dardosDentro = 0;     // dardos que caen dentro del cuarto de circulo
+
+        while (dardosLanzados < dardosTotales) {
+            // Coordenadas al azar dentro del cuadrado, entre 0 y 1
+            double x = Math.random();
+            double y = Math.random();
+
+            // El dardo esta dentro si su distancia al origen es <= 1.
+            // Se compara el cuadrado de la distancia para no sacar raiz.
+            if (x * x + y * y <= 1) {
+                dardosDentro++;
+            }
+
+            dardosLanzados++;
+        }
+
+        // dentro / total es aproximadamente pi / 4, asi que pi = 4 * dentro / total.
+        // El 4.0 hace que la division sea decimal y no entera.
+        double estimacionPi = 4.0 * dardosDentro / dardosTotales;
+
+        System.out.printf("Dardos lanzados: %d%n", dardosTotales);
+        System.out.printf("Dardos dentro del circulo: %d%n", dardosDentro);
+        System.out.printf("Estimacion de pi: %.6f%n", estimacionPi);
+    }
+}

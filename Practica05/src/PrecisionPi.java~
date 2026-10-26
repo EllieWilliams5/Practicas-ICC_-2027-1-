@@ -1,0 +1,42 @@
+/*
+ * Practica 5 - Actividad 1.2: Repetir hasta llegar a la precision deseada
+ * Lanza dardos con el metodo Monte Carlo hasta que la estimacion de pi
+ * quede a una distancia menor que la tolerancia del valor real.
+ */
+public class PrecisionPi {
+    public static void main(String[] args) {
+
+        // Error maximo aceptado (cambiar por 0.1, 0.01 o 0.001)
+        double tolerancia = 0.1;
+
+        int dardosLanzados = 0;
+        int dardosDentro = 0;
+
+        // Antes de lanzar, la estimacion es 0, asi que el error inicial es pi:
+        // mayor que cualquier tolerancia, y el ciclo siempre arranca.
+        double estimacionPi = 0.0;
+        double error = Math.abs(estimacionPi - Math.PI);
+
+        while (error >= tolerancia) {
+	    
+            double x = Math.random();
+            double y = Math.random();
+
+            if (x * x + y * y <= 1) {
+                dardosDentro++;
+            }
+            dardosLanzados++;
+
+            // La estimacion y el error se recalculan en cada vuelta;
+            // si no, la condicion del while revisaria siempre el mismo valor.
+            estimacionPi = 4.0 * dardosDentro / dardosLanzados;
+            error = Math.abs(estimacionPi - Math.PI);
+	    
+        }
+
+        System.out.printf("Tolerancia: %s%n", tolerancia);
+        System.out.printf("Dardos necesarios: %d%n", dardosLanzados);
+        System.out.printf("Estimacion de pi: %.6f%n", estimacionPi);
+        System.out.printf("Error: %.6f%n", error);
+    }
+}
