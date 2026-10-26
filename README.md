@@ -16,11 +16,13 @@ No incluye reportes, únicamente el código.
 | `Practica03/` | Introducción a Git y LaTeX | Documento de LaTeX, README de ejemplo y comandos de Git |
 | `Practica04/` | Dándole memoria a un programa | Variables en JShell, comentarios, `printf` y el cotizador |
 
+**Próximamente, la práctica 5...**
+
 ## Cómo ejecutar
 
-- **Scripts de JShell** (`.jsh`): `jshell < archivo.jsh`
 - **Programas de Java**: dentro de la carpeta del programa,
   ```
   javac Archivo.java
   java Archivo
   ```
+  
