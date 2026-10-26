@@ -15,14 +15,17 @@ No incluye reportes, únicamente el código.
 | `Practica02/` | Primeros pasos en Java | Scripts de JShell, `Bienvenida.java` y `Errores.java` corregido |
 | `Practica03/` | Introducción a Git y LaTeX | Documento de LaTeX, README de ejemplo y comandos de Git |
 | `Practica04/` | Dándole memoria a un programa | Variables en JShell, comentarios, `printf` y el cotizador |
+| `Practica05/` | Decisiones y repeticiones | Representación de Monte Carlo y parte dos del cotizador |
 
-**Próximamente, la práctica 5...**
+**Próximamente, la práctica 6...**
 
-## Cómo ejecutar
+## Cómo ejecutar (De la práctica 1 a la 4)
 
 - **Programas de Java**: dentro de la carpeta del programa,
   ```
   javac Archivo.java
   java Archivo
   ```
-  
+## Cómo ejecutar (De la práctica 5 en adelante)
+
+Cada proyecto trae consigo un `Readme.md` que especifica como correr el proyecto de manera limpia ;)
