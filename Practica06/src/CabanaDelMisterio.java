@@ -1,0 +1,261 @@
+/*
+ * Practica 6 - Actividad 2.1: Programa final para la Cabana del Misterio
+ * Registra a un cliente pidiendo y validando sus datos, y ofrece un menu
+ * para cotizar con interes simple y compuesto, compararlos y cambiar el
+ * capital. Termina con la opcion 0, al llegar a 5 operaciones o al
+ * cometer 3 errores en el menu.
+ */
+import java.util.Scanner;
+
+public class CabanaDelMisterio {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Limites que impuso el senor Pines
+        final int MAX_OPERACIONES = 5;
+        final int MAX_ERRORES = 3;
+
+        System.out.println("\n????? Registro de cliente de la Cabana del Misterio ?????");
+
+        // ===================================================================
+        // 1. Registro del cliente: cada dato se pide hasta que sea valido
+        // ===================================================================
+
+        // El nombre va primero y con nextLine(), para que no quede ningun
+        // Enter pendiente de una lectura de numero anterior.
+        System.out.print("Nombre completo del cliente: ");
+        String nombreCliente = sc.nextLine();
+
+        // ----- Tipo de cliente -----
+        char tipoCliente = ' ';
+        boolean datoValido = false;
+        while (!datoValido) {
+            System.out.print("Tipo de cliente (P = preferente, E = estandar, R = riesgoso): ");
+            String tipoTexto = sc.next();
+            if (tipoTexto.equals("P") || tipoTexto.equals("E") || tipoTexto.equals("R")) {
+                tipoCliente = tipoTexto.charAt(0);
+                datoValido = true;
+            } else {
+                System.out.println("> El tipo de cliente debe ser P, E o R (en mayuscula).");
+            }
+        }
+
+        // ----- Capital -----
+        double capital = 0;
+        datoValido = false;
+        while (!datoValido) {
+            System.out.print("Capital del prestamo: ");
+            if (sc.hasNextDouble()) {
+                capital = sc.nextDouble();
+                if (capital > 0) {
+                    datoValido = true;
+                } else {
+                    System.out.println("> El capital debe ser mayor que 0.");
+                }
+            } else {
+                String entradaInvalida = sc.next();
+                System.out.println("> \"" + entradaInvalida + "\" no es un numero.");
+            }
+        }
+
+        // ----- Tasa anual base -----
+        double tasaBase = 0;
+        datoValido = false;
+        while (!datoValido) {
+            System.out.print("Tasa anual base (porcentaje): ");
+            if (sc.hasNextDouble()) {
+                tasaBase = sc.nextDouble();
+                if (tasaBase >= 0) {
+                    datoValido = true;
+                } else {
+                    System.out.println("> La tasa no puede ser negativa.");
+                }
+            } else {
+                String entradaInvalida = sc.next();
+                System.out.println("> \"" + entradaInvalida + "\" no es un numero.");
+            }
+        }
+
+        // ----- Plazo en meses -----
+        int plazoMeses = 0;
+        datoValido = false;
+        while (!datoValido) {
+            System.out.print("Plazo en meses: ");
+            if (sc.hasNextInt()) {
+                plazoMeses = sc.nextInt();
+                if (plazoMeses > 0) {
+                    datoValido = true;
+                } else {
+                    System.out.println("> El plazo debe ser de al menos 1 mes.");
+                }
+            } else {
+                String entradaInvalida = sc.next();
+                System.out.println("> \"" + entradaInvalida + "\" no es un numero entero de meses.");
+            }
+        }
+
+        // ===================================================================
+        // 2. Datos que dependen del tipo de cliente (no cambian despues)
+        // ===================================================================
+        double tasaAplicada;
+        String nombreTipo;
+        if (tipoCliente == 'P') {
+            tasaAplicada = tasaBase - 2;
+            nombreTipo = "Preferente";
+        } else if (tipoCliente == 'E') {
+            tasaAplicada = tasaBase;
+            nombreTipo = "Estandar";
+        } else {
+            tasaAplicada = tasaBase + 3;
+            nombreTipo = "Riesgoso";
+        }
+        double tasaMensual = tasaAplicada / 100 / 12;
+        double plazoAnios = plazoMeses / 12.0;
+
+        // ===================================================================
+        // 3. Menu
+        // ===================================================================
+        int operaciones = 0;
+        int errores = 0;
+        boolean continuar = true;
+        String motivoFin = "";
+
+        while (continuar) {
+            System.out.println();
+            System.out.println("##### Sistema de prestamos de la Cabana del Misterio #####");
+            System.out.println("> Las operaciones disponibles son");
+            System.out.println("1) Cotizar con interes simple.");
+            System.out.println("2) Cotizar con interes compuesto.");
+            System.out.println("3) Comparar interes simple y compuesto.");
+            System.out.println("4) Cambiar el capital del prestamo.");
+            System.out.println("0) Salir.");
+            System.out.print("> Por favor, elige una opcion: ");
+
+            // ----- Leer la opcion sin tronar -----
+            int opcion = -1;    // -1 no es una opcion del menu
+            if (sc.hasNextInt()) {
+                opcion = sc.nextInt();
+            } else {
+                sc.next();      // descartar lo que no es numero
+            }
+
+            // Los calculos se rehacen en cada vuelta porque el capital
+            // puede haber cambiado con la opcion 4.
+            double interesSimple = capital * (tasaAplicada / 100) * plazoAnios;
+            double totalSimple = capital + interesSimple;
+            double totalCompuesto = capital * Math.pow(1 + tasaMensual, plazoMeses);
+            double interesCompuesto = totalCompuesto - capital;
+
+            switch (opcion) {
+                case 1:
+                    System.out.println();
+                    System.out.println("### Opcion 1 : Cotizacion de interes simple ###");
+                    System.out.printf("- Nombre : %s%n", nombreCliente);
+                    System.out.printf("- Tipo de cliente : %s%n", nombreTipo);
+                    System.out.printf("- Capital del prestamo : %.2f%n", capital);
+                    System.out.printf("- Tasa anual base : %.2f (aplicada: %.2f)%n", tasaBase, tasaAplicada);
+                    System.out.printf("- Plazo en meses : %d%n", plazoMeses);
+                    System.out.printf("> Interes simple = %.2f%n", interesSimple);
+                    System.out.printf("> Total a pagar = %.2f%n", totalSimple);
+                    operaciones++;
+                    break;
+
+                case 2:
+                    System.out.println();
+                    System.out.println("### Opcion 2 : Cotizacion de interes compuesto ###");
+                    System.out.printf("- Nombre : %s%n", nombreCliente);
+                    System.out.printf("- Tipo de cliente : %s%n", nombreTipo);
+                    System.out.printf("- Capital del prestamo : %.2f%n", capital);
+                    System.out.printf("- Tasa anual base : %.2f (aplicada: %.2f)%n", tasaBase, tasaAplicada);
+                    System.out.printf("- Plazo en meses : %d%n", plazoMeses);
+                    double saldo = capital;
+                    for (int mes = 1; mes <= plazoMeses; mes++) {
+                        saldo = saldo * (1 + tasaMensual);
+                        System.out.printf("> Mes %d = %.2f%n", mes, saldo);
+                    }
+                    System.out.printf("> Interes compuesto = %.2f%n", saldo - capital);
+                    System.out.printf("> Total a pagar = %.2f%n", saldo);
+                    operaciones++;
+                    break;
+
+                case 3:
+                    System.out.println();
+                    System.out.println("### Opcion 3 : Comparacion de intereses ###");
+                    System.out.printf("> Interes simple = %.2f%n", interesSimple);
+                    System.out.printf("> Interes compuesto = %.2f%n", interesCompuesto);
+                    System.out.printf("> La diferencia entre ellos es de %.2f%n",
+                            Math.abs(interesCompuesto - interesSimple));
+                    if (interesCompuesto > interesSimple) {
+                        System.out.println("> El interes compuesto es mayor.");
+                    } else if (interesSimple > interesCompuesto) {
+                        System.out.println("> El interes simple es mayor.");
+                    } else {
+                        System.out.println("> Ambos intereses son iguales.");
+                    }
+                    operaciones++;
+                    break;
+
+                case 4:
+                    System.out.println();
+                    System.out.println("### Opcion 4 : Cambiar el capital ###");
+                    datoValido = false;
+                    while (!datoValido) {
+                        System.out.print("Nuevo capital del prestamo: ");
+                        if (sc.hasNextDouble()) {
+                            double nuevoCapital = sc.nextDouble();
+                            if (nuevoCapital > 0) {
+                                capital = nuevoCapital;
+                                datoValido = true;
+                            } else {
+                                System.out.println("> El capital debe ser mayor que 0.");
+                            }
+                        } else {
+                            String entradaInvalida = sc.next();
+                            System.out.println("> \"" + entradaInvalida + "\" no es un numero.");
+                        }
+                    }
+                    System.out.printf("> El capital ahora es de %.2f%n", capital);
+                    operaciones++;
+                    break;
+
+                case 0:
+                    motivoFin = "El usuario eligio salir.";
+                    continuar = false;
+                    break;
+
+                default:
+                    // Cualquier cosa que no sea 0 a 4, incluido lo que no era numero
+                    errores++;
+                    System.out.printf("> Opcion invalida. Errores: %d de %d.%n", errores, MAX_ERRORES);
+                    break;
+            }
+
+            // ----- Revisar los limites -----
+            if (continuar && operaciones == MAX_OPERACIONES) {
+                System.out.println();
+                System.out.println("> Se alcanzo el limite de operaciones.");
+                motivoFin = "Se alcanzo el limite de " + MAX_OPERACIONES + " operaciones.";
+                continuar = false;
+            } else if (continuar && errores == MAX_ERRORES) {
+                System.out.println();
+                System.out.println("> Se alcanzo el limite de errores.");
+                motivoFin = "Se alcanzo el limite de " + MAX_ERRORES + " errores en el menu.";
+                continuar = false;
+            }
+        }
+
+        // ===================================================================
+        // 4. Resumen final
+        // ===================================================================
+        System.out.println();
+        System.out.println("##### Resumen #####");
+        System.out.printf("- Cliente : %s%n", nombreCliente);
+        System.out.printf("- Operaciones efectivas : %d%n", operaciones);
+        System.out.printf("- Errores en el menu : %d%n", errores);
+        System.out.printf("- Capital final : %.2f%n", capital);
+        System.out.printf("- Motivo de cierre : %s%n", motivoFin);
+        System.out.println("Gracias por visitar la Cabana del Misterio!");
+
+        sc.close();
+    }
+}
